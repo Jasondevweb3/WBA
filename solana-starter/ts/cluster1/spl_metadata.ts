@@ -36,7 +36,7 @@ const seeds = [
   const metadata_pda = umi.eddsa.findPda(tokenMetadataProgramId, seeds);
 
 (async () => {
-    // try {
+    try {
         // Start here
         let accounts: CreateMetadataAccountV3InstructionAccounts = {
             metadata: publicKey(metadata_pda),
@@ -74,8 +74,8 @@ const seeds = [
 
         let result = await tx.sendAndConfirm(umi).then(r => r.signature.toString());
         console.log(result);
-    // } 
-    // catch(e) {
-    //     console.error(`Oops, something went wrong: ${e}`)
-    // }
+    } 
+    catch(e) {
+        console.error(`Oops, something went wrong: ${e}`)
+    }
 })();

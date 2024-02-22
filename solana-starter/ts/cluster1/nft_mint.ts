@@ -1,6 +1,6 @@
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults"
 import { createSignerFromKeypair, signerIdentity, generateSigner, percentAmount } from "@metaplex-foundation/umi"
-import { createNft, mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";
+import { createNft, mplTokenMetadata, CreateV1InstructionDataArgs, isNonFungible, CreateV1InstructionAccounts } from "@metaplex-foundation/mpl-token-metadata";
 
 import wallet from "../cluster1/wallet/wba-wallet.json"
 import base58 from "bs58";
@@ -16,11 +16,27 @@ umi.use(mplTokenMetadata())
 const mint = generateSigner(umi);
 
 (async () => {
-    // let tx = ???
-    // let result = await tx.sendAndConfirm(umi);
-    // const signature = base58.encode(result.signature);
+    // let prop: CreateV1InstructionDataArgs = {
+    //     name: "MyFirstRug",
+    //     symbol: "MFR",
+    //     uri: "https://arweave.net/pXn0ramJeX20dhpvyhf7Ko9Gv5sFtMjuttVt4PnI-Pk",
+    //     sellerFeeBasisPoints: percentAmount(4),
+    //     creators: null,
+    //     tokenStandard: 0,
+    //     };
+    // let tx = await createNft(umi, );
+
+    let tx = await createNft(umi, {
+        mint,
+        name: "MyFirstRug",
+        uri: "https://arweave.net/pXn0ramJeX20dhpvyhf7Ko9Gv5sFtMjuttVt4PnI-Pk",
+        sellerFeeBasisPoints: percentAmount(4),
+      });
+
+    let result = await tx.sendAndConfirm(umi);
+    const signature = base58.encode(result.signature);
     
-    // console.log(`Succesfully Minted! Check out your TX here:\nhttps://explorer.solana.com/tx/${signature}?cluster=devnet`)
+    console.log(`Succesfully Minted! Check out your TX here:\nhttps://explorer.solana.com/tx/${signature}?cluster=devnet`)
 
     console.log("Mint Address: ", mint.publicKey);
 })();
